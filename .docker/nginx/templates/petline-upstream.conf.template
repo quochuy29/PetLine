@@ -1,0 +1,3 @@
+upstream petline_upstream {
+    server ${APP_CONTAINER_LINK};
+}
