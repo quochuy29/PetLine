@@ -12,7 +12,7 @@ services:
     environment:
       APPLICATION_ENV: production
     build:
-      context: .
+      context: ./BE
       dockerfile: .docker/Dockerfile
       target: petline-app
       args:
@@ -25,7 +25,7 @@ services:
     container_name: petline_public
     init: true
     build:
-      context: .
+      context: ./BE
       dockerfile: .docker/Dockerfile
       target: petline-public
       args:
@@ -37,8 +37,20 @@ services:
     depends_on:
       - petline_app
     environment:
-        - APP_CONTAINER_LINK=petline_app:9000
-
+      - APP_CONTAINER_LINK=petline_app:9000
+  petline_fe:
+    image: petline-fe:${TAG:-latest}
+    container_name: petline_fe
+    init: true
+    build:
+        context: ./FE
+        dockerfile: Dockerfile
+        target: petline-fe
+        args:
+          GIT_COMMIT_HASH: N/A
+          GIT_BRANCH_NAME: N/A
+    tty: true
+    restart: always
 networks:
   default:
     name: petline
